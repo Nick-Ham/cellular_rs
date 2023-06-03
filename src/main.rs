@@ -2,6 +2,8 @@ use glam::IVec2;
 use raylib::prelude::*;
 use std::time;
 
+//this is a comment
+
 const WINDOW_WIDTH: i32 = 1820; //640
 const WINDOW_HEIGHT: i32 = 980; //480
 
