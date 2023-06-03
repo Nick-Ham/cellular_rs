@@ -4,14 +4,14 @@ use raylib::prelude::*;
 const WINDOW_WIDTH: i32 = 500;
 const WINDOW_HEIGHT: i32 = 500;
 
-const CELL_SIZE: i32 = 30;
+const CELL_SIZE: i32 = 10;
 const CELL_ON_COLOR: Color = Color::WHITE;
 const CELL_OFF_COLOR: Color = Color::BLACK;
-const CELL_PADDING: i32 = 2;
+const CELL_PADDING: i32 = 0;
 
 const BACKGROUND_COLOR: Color = Color::GRAY;
 
-const FRAMES_PER_SECOND: f32 = 2.0;
+const FRAMES_PER_SECOND: f32 = 6.0;
 const FRAME_TIME_MILLIS: f32 = 1.0 / FRAMES_PER_SECOND;
 
 macro_rules! make_blinker {
@@ -24,11 +24,11 @@ macro_rules! make_blinker {
 
 macro_rules! make_glider {
     ($grid:expr, $position:expr) => {
-        $grid[($position.x) as usize][($position.y) as usize].state = true;
-        $grid[($position.x + 1) as usize][($position.y + 1) as usize].state = true;
+        $grid[($position.x + 1) as usize][($position.y) as usize].state = true;
+        $grid[($position.x + 2) as usize][($position.y + 1) as usize].state = true;
+        $grid[($position.x + 2) as usize][($position.y + 2) as usize].state = true;
         $grid[($position.x + 1) as usize][($position.y + 2) as usize].state = true;
         $grid[($position.x) as usize][($position.y + 2) as usize].state = true;
-        $grid[($position.x + -1) as usize][($position.y + 2) as usize].state = true;
     };
 }
 
@@ -74,6 +74,8 @@ fn main() {
     fill_cells_grid(&mut grid);
 
     make_glider!(grid, IVec2::new(1, 0));
+    make_blinker!(grid, IVec2::new(12, 14));
+    make_glider!(grid, IVec2::new(8, 2));
 
     let mut elapsed_time = 0.0;
     while !rl.window_should_close() {
