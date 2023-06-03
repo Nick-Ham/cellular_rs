@@ -1,18 +1,21 @@
 use glam::IVec2;
+use rand::prelude::*;
 use raylib::prelude::*;
 
 const WINDOW_WIDTH: i32 = 500;
 const WINDOW_HEIGHT: i32 = 500;
 
-const CELL_SIZE: i32 = 10;
+const CELL_SIZE: i32 = 5;
 const CELL_ON_COLOR: Color = Color::WHITE;
 const CELL_OFF_COLOR: Color = Color::BLACK;
 const CELL_PADDING: i32 = 0;
 
 const BACKGROUND_COLOR: Color = Color::GRAY;
 
-const FRAMES_PER_SECOND: f32 = 6.0;
+const FRAMES_PER_SECOND: f32 = 10.0;
 const FRAME_TIME_MILLIS: f32 = 1.0 / FRAMES_PER_SECOND;
+
+const INITIAL_CELLS: i32 = 750;
 
 macro_rules! make_blinker {
     ($grid:expr, $position:expr) => {
@@ -69,13 +72,13 @@ fn main() {
         .title("Hello, World")
         .build();
 
+    let mut rng = thread_rng();
+
     let mut grid: Vec<Vec<Cell>> = Vec::new();
 
     fill_cells_grid(&mut grid);
 
-    make_glider!(grid, IVec2::new(1, 0));
-    make_blinker!(grid, IVec2::new(12, 14));
-    make_glider!(grid, IVec2::new(8, 2));
+    randomly_populate_grid(&mut grid, &mut rng);
 
     let mut elapsed_time = 0.0;
     while !rl.window_should_close() {
@@ -89,6 +92,28 @@ fn main() {
 
         draw_cells(&grid, &mut d);
         elapsed_time += d.get_frame_time();
+    }
+}
+
+fn randomly_populate_grid(cells: &mut Vec<Vec<Cell>>, rng: &mut ThreadRng) {
+    if INITIAL_CELLS >= (get_grid_size().x * get_grid_size().y) {
+        panic!("Impossible value for INITIAL_CELLS with current grid settings!");
+    }
+
+    for i in 0..INITIAL_CELLS {
+        let mut rand_x = rng.gen_range(0..get_grid_size().x);
+        let mut rand_y = rng.gen_range(0..get_grid_size().y);
+
+        let mut cell = &mut cells[rand_x as usize][rand_y as usize];
+
+        while cell.state {
+            rand_x = rng.gen_range(0..get_grid_size().x);
+            rand_y = rng.gen_range(0..get_grid_size().y);
+
+            cell = &mut cells[rand_x as usize][rand_y as usize];
+        }
+
+        cell.state = true;
     }
 }
 
