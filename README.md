@@ -3,6 +3,5 @@ Current rules are Conway's Game of Life
 
 ## Demo
 
-https://github.com/Nick-Ham/cellular_rs/assets/25405943/039251f0-1275-44c0-bf31-0a935db8d625
+https://github.com/Nick-Ham/cellular_rs/assets/25405943/b52283f9-92d8-4873-9a20-60030404500f
 
-Screen recording is a bit choppy due to my capture software.
